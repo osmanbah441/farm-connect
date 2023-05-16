@@ -1,0 +1,29 @@
+name: farm_connect
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^7.0.1
+
+  # local packages
+  sign_in:
+    path: ./packages/features/sign_in
+  
+
+  form_fields:
+    path: ./packages/form_fields
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true

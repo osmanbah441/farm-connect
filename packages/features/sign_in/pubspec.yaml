@@ -1,0 +1,28 @@
+name: sign_in
+description: A new Flutter package project.
+version: 0.1.0
+homepage:
+
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.2
+  equatable: ^2.0.5
+  form_fields:
+    path: ../../form_fields
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+
