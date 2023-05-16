@@ -1,6 +1,8 @@
+import 'package:component_library/component_library.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
+import 'package:user_repository/user_repository.dart';
 
 import 'sign_in_cubit.dart';
 
@@ -10,19 +12,19 @@ class SignInScreen extends StatelessWidget {
     required this.onForgotPasswordTap,
     required this.onSignInSuccessful,
     required this.onSignUpTap,
+    required this.userRepository,
   });
 
   final VoidCallback onSignInSuccessful;
   final VoidCallback onForgotPasswordTap;
   final VoidCallback onSignUpTap;
-
-  // TODO: add user repostory
+  final UserRepository userRepository;
 
   @override
   Widget build(BuildContext context) => Scaffold(
         body: SafeArea(
           child: BlocProvider(
-            create: (context) => SignInCubit(),
+            create: (context) => SignInCubit(userRepository),
             child: _SignInForm(
               onForgotPasswordTap: onForgotPasswordTap,
               onSignInSuccessful: onSignInSuccessful,
@@ -83,12 +85,18 @@ class __SignInFormState extends State<_SignInForm> {
       listenWhen: (previous, current) =>
           previous.submissionStatus != current.submissionStatus,
       listener: (context, state) {
-        if (state.submissionStatus.isInProgress) {
+        if (state.submissionStatus.isSuccessful) {
           widget.onSignInSuccessful();
           return;
         }
-
-        // TODO: Handle error
+        if (state.submissionStatus.hasError) {
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+                content: Text(state.submissionStatus.isInvalidCredentialError
+                    ? 'invalid credential, email/password not found'
+                    : 'no internet connection')));
+        }
       },
       builder: (context, state) {
         final cubit = context.read<SignInCubit>();
@@ -148,46 +156,6 @@ class __SignInFormState extends State<_SignInForm> {
           ],
         );
       },
-    );
-  }
-}
-
-class ExpandedElevatedButton extends StatelessWidget {
-  const ExpandedElevatedButton({
-    super.key,
-    required this.label,
-    this.icon,
-    this.onTap,
-  });
-
-  final Widget? icon;
-  final String label;
-  final VoidCallback? onTap;
-
-  ExpandedElevatedButton.inProgress(String label, {Key? key})
-      : this(
-          key: key,
-          label: label,
-          icon: Transform.scale(
-            scale: 0.5,
-            child: const CircularProgressIndicator(),
-          ),
-        );
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 48,
-      width: double.infinity,
-      child: (icon != null)
-          ? ElevatedButton.icon(
-              onPressed: onTap,
-              icon: icon!,
-              label: Text(label),
-            )
-          : ElevatedButton(
-              onPressed: onTap,
-              child: Text(label),
-            ),
     );
   }
 }

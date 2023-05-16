@@ -1,19 +1,5 @@
 // Inspiration for the formz package 0.4.0. check it out for doc
 
-/// Check the form status.
-enum FormSubmissionStatus {
-  initial,
-  inProgress,
-  successful,
-  error;
-
-  bool get isInProgress => this == FormSubmissionStatus.inProgress;
-
-  bool get isSuccessful => this == FormSubmissionStatus.successful;
-
-  bool get hasError => this == FormSubmissionStatus.error;
-}
-
 abstract base class FormInput<T, E> {
   const FormInput._(this.value, this.isUnvalidated);
 

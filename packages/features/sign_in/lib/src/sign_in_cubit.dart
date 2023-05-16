@@ -1,13 +1,15 @@
+import 'package:domain_models/domain_models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_fields/form_fields.dart';
+import 'package:user_repository/user_repository.dart';
 
 part 'sign_in_state.dart';
 
 class SignInCubit extends Cubit<SignInState> {
-  SignInCubit() : super(const SignInState());
+  SignInCubit(this.userRepository) : super(const SignInState());
 
-  // TODO: add user repostory
+  final UserRepository userRepository;
 
   void onEmailChanged(String newValue) {
     final shouldValidate = !state.email.isUnvalidated;
@@ -49,16 +51,23 @@ class SignInCubit extends Cubit<SignInState> {
 
     final isFormValid = FormFields.validate([email, password]);
     if (isFormValid) {
-      emit(state.copyWith(submissionStatus: FormSubmissionStatus.inProgress));
-      _signIn();
+      emit(state.copyWith(submissionStatus: SubmissionStatus.inProgress));
+      _signIn(email.value, password.value);
     } else {
       emit(state.copyWith(email: email, password: password));
     }
   }
 
-  void _signIn() async {
-    // TODO: call api and handle error
-    await Future.delayed(const Duration(seconds: 2));
-    emit(state.copyWith(submissionStatus: FormSubmissionStatus.initial));
+  void _signIn(String email, String password) async {
+    try {
+      await userRepository.signIn(email, password);
+      emit(state.copyWith(submissionStatus: SubmissionStatus.successful));
+    } catch (error) {
+      emit(state.copyWith(
+        submissionStatus: error is InvalidCredentialException
+            ? SubmissionStatus.invalidCredentialError
+            : SubmissionStatus.genericError,
+      ));
+    }
   }
 }
