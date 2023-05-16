@@ -17,5 +17,17 @@ final class UserRepository {
     });
   }
 
-  // TODO: signUp
+  Future<void> signUp(
+    String name,
+    String email,
+    String password,
+  ) async {
+    // TODO:
+    await Future.delayed(const Duration(seconds: 1), () {
+      final rnd = Random().nextInt(3);
+      print(rnd);
+      if (rnd == 1) throw GenericException();
+      if (rnd == 2) throw EmailAlreadyRegisteredException();
+    });
+  }
 }

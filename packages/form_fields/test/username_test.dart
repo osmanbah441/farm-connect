@@ -1,8 +1,9 @@
-import 'package:form_fields/form_fields.dart' show usernameRegex;
+import 'package:form_fields/form_fields.dart' show Username;
+import 'package:form_fields/src/user_name.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final regex = usernameRegex;
+  final regex = Username.usernameRegex;
   test('valid usernames', () {
     expect(
       regex.hasMatch('username'),
