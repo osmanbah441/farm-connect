@@ -5,3 +5,7 @@ class GenericException implements Exception {
 class InvalidCredentialException implements Exception {
   const InvalidCredentialException();
 }
+
+class EmailAlreadyRegisteredException implements Exception {
+  const EmailAlreadyRegisteredException();
+}

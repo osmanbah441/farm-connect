@@ -2,7 +2,12 @@ import 'package:meta/meta.dart';
 
 import 'form_fields_base.dart';
 
-// This regular expression is a pattern that can be used to validate a string to ensure it
+final class Username extends FormInput<String, UsernameValidationError> {
+  const Username.unvalidated([String value = '']) : super.unvalidated(value);
+
+  const Username.validated(String value) : super.validated(value);
+
+  // This regular expression is a pattern that can be used to validate a string to ensure it
 // meets certain criteria. Specifically, it checks that the string:
 
 // contains between 1 and 20 characters (inclusive)
@@ -29,50 +34,23 @@ import 'form_fields_base.dart';
 // Overall, this regular expression is useful for validating input in various scenarios
 // such as user account creation or password validation, where a string needs to meet specific
 // criteria to be considered valid.
-@visibleForTesting
-final usernameRegex = RegExp(
-  r'^(?=.{1,20}$)(?![_])(?!.*[_.]{2})[a-zA-Z0-9_]+(?<![_])$',
-);
-
-final class FirstName extends FormInput<String, FirstNameValidationError> {
-  const FirstName.unvalidated([String value = '']) : super.unvalidated(value);
-
-  const FirstName.validated(String value) : super.validated(value);
+  @visibleForTesting
+  static final usernameRegex = RegExp(
+    r'^(?=.{1,20}$)(?![_])(?!.*[_.]{2})[a-zA-Z0-9_]+(?<![_])$',
+  );
 
   @override
-  FirstNameValidationError? validator(String value) {
-    if (value.isEmpty) return FirstNameValidationError.empty;
+  UsernameValidationError? validator(String value) {
+    if (value.isEmpty) return UsernameValidationError.empty;
     if (value.length < 3 || value.length > 20) {
-      return FirstNameValidationError.length;
+      return UsernameValidationError.length;
     }
-    if (!usernameRegex.hasMatch(value)) return FirstNameValidationError.invalid;
+    if (!usernameRegex.hasMatch(value)) return UsernameValidationError.invalid;
     return null;
   }
 }
 
-enum FirstNameValidationError {
-  invalid,
-  empty,
-  length,
-}
-
-final class LastName extends FormInput<String, FirstNameValidationError> {
-  const LastName.unvalidated([String value = '']) : super.unvalidated(value);
-
-  const LastName.validated(String value) : super.validated(value);
-
-  @override
-  FirstNameValidationError? validator(String value) {
-    if (value.isEmpty) return FirstNameValidationError.empty;
-    if (value.length < 3 || value.length > 20) {
-      return FirstNameValidationError.length;
-    }
-    if (!usernameRegex.hasMatch(value)) return FirstNameValidationError.invalid;
-    return null;
-  }
-}
-
-enum LastNameValidationError {
+enum UsernameValidationError {
   invalid,
   empty,
   length,
