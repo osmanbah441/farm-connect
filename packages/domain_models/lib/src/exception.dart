@@ -1,11 +1,13 @@
-class GenericException implements Exception {
+final class GenericException implements Exception {
   const GenericException();
 }
 
-class InvalidCredentialException implements Exception {
+final class InvalidCredentialException implements Exception {
   const InvalidCredentialException();
 }
 
-class EmailAlreadyRegisteredException implements Exception {
+final class EmailAlreadyRegisteredException implements Exception {
   const EmailAlreadyRegisteredException();
 }
+
+final class EmptySearchResultException implements Exception {}
