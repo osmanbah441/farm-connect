@@ -11,13 +11,15 @@ dependencies:
     sdk: flutter
   go_router: ^7.0.1
 
-  # local packages
+  # features
   sign_in:
     path: ./packages/features/sign_in
   sign_up:
     path: ./packages/features/sign_up
+  product_list:
+    path: ./packages/features/product_list
   
-
+  # layer
   form_fields:
     path: ./packages/form_fields
   component_library:
@@ -26,6 +28,8 @@ dependencies:
     path: ./packages/user_repository
   domain_models:
     path: ./packages/domain_models
+  product_repository:
+    path: ./packages/product_repository
 
 
 dev_dependencies:
